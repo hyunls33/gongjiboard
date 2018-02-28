@@ -3,7 +3,7 @@ package com.mycom.dao;
 import java.util.List;
 
 import com.mycom.dto.Criteria;
-
+import com.mycom.dto.ReplyPageVO;
 import com.mycom.dto.ReplyVO;
 
 public interface ReplyDAO {
@@ -19,5 +19,5 @@ public interface ReplyDAO {
     //현재 게시물의 전체 댓글 수 조회
 	public int count(int id) throws Exception;
 	
-	public List<ReplyVO> listPage(Integer bno, Criteria cri) throws Exception;
+	public List<ReplyVO> listPage(int id, ReplyPageVO vo) throws Exception;
 }

@@ -9,6 +9,7 @@ import com.mycom.dto.Criteria;
 
 import com.mycom.dao.ReplyDAO;
 import com.mycom.dto.ReplyVO;
+import com.mycom.dto.ReplyPageVO;
 
 @Service
 public class ReplyServiceImpl implements ReplyService {
@@ -64,8 +65,8 @@ public class ReplyServiceImpl implements ReplyService {
     }
     
     @Override
-    public List<ReplyVO> listReplyPage(Integer bno, Criteria cri) throws Exception {
+    public List<ReplyVO> listReplyPage(int id, ReplyPageVO vo) throws Exception {
 
-      return replyDao.listPage(bno, cri);
+      return replyDao.listPage(id, vo);
     }
 }

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 import com.mycom.dto.Criteria;
 import com.mycom.dto.PageMaker;
 import com.mycom.dto.ReplyPageVO;
@@ -73,20 +72,14 @@ public class ReplyController {
 	    ResponseEntity<Map<String, Object>> entity = null;
 	    
 	    try {
-		    Criteria cri = new Criteria();
-		    cri.setPage(page);
-		
-		    PageMaker pageMaker = new PageMaker();
-		    pageMaker.setCri(cri);
-		
 		    Map<String, Object> map = new HashMap<String, Object>();
-		    List<ReplyVO> list = replyService.listReplyPage(id, cri);
+		    
+		    int replyCount = replyService.count(id);
+		    ReplyPageVO pageMaker = new ReplyPageVO(replyCount, page);
+		    
+		    List<ReplyVO> list = replyService.listReplyPage(id, pageMaker);
 		
 		    map.put("list", list);
-		
-		    int replyCount = replyService.count(id);
-		    pageMaker.setTotalCount(replyCount);
-		
 		    map.put("pageMaker", pageMaker);
 		
 		    entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);

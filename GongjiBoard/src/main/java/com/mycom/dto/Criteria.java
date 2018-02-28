@@ -3,6 +3,7 @@ package com.mycom.dto;
 public class Criteria {
 	private int page;	
 	private int perPageNum;
+	private int pageStart;
 	
 	public Criteria(){
 		this.page = 1;
@@ -35,8 +36,8 @@ public class Criteria {
 	
 	//method for MyBatis SQL Mapper - 
 	public int getPageStart() {
-		
-		return (this.page -1)* perPageNum;
+		this.pageStart = (this.page -1)* perPageNum; 
+		return pageStart;
 	}
 	
 	//method for MyBatis SQL Mapper 

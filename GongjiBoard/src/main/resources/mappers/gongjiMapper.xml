@@ -87,14 +87,9 @@
     </select>
     
     <select id="listPage" resultType="com.mycom.dto.ReplyVO">
-		select
-		*
-		from
-		GONGJI_COMMENT
-		where
-		ID = #{bno}
-		order by RNO desc
-		limit #{cri.pageStart}, #{cri.perPageNum}
+		SELECT A.RNO, A.ID, A.REPLYTEXT, A.REPLYER, A.REGDATE 
+		FROM (SELECT RNO, ID, REPLYTEXT, REPLYER, REGDATE FROM GONGJI_COMMENT WHERE ID = #{id} ORDER BY RNO) AS A
+		LIMIT #{vo.curPage},10
 	</select>
 
 </mapper>

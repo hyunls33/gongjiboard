@@ -117,9 +117,11 @@
  	
     function getPageList(page){
 		var id = ${dto.id};
+		console.log(id);
 		  $.getJSON("${path}/gongjiboard/board/reply/"+id+"/"+page , function(data){
 			  
 			  console.log(data.list.length);
+			  console.log(page);
 			  
 			  var str ="";
 			  
@@ -138,20 +140,20 @@
 		
 		  
 		function printPaging(pageMaker){
-			
+			console.log(pageMaker);
 			var str = "";
 			
-			if(pageMaker.prev){
-				str += "<li><a href='"+(pageMaker.startPage-1)+"'> << </a></li>";
+			if(pageMaker.prevBlock){
+				str += "<li><a href='"+(pageMaker.pageBegin)+"'> << </a></li>";
 			}
 			
-			for(var i=pageMaker.startPage, len = pageMaker.endPage; i <= len; i++){				
-					var strClass= pageMaker.cri.page == i?'class=active':'';
+			for(var i=pageMaker.pageBegin, len = pageMaker.pageEnd; i <= len; i++){				
+					var strClass= pageMaker.curPage == i?'class=active':'';
 				  str += "<li "+strClass+"><a href='"+i+"'>"+i+"</a></li>";
 			}
 			
-			if(pageMaker.next){
-				str += "<li><a href='"+(pageMaker.endPage + 1)+"'> >> </a></li>";
+			if(pageMaker.nextBlock){
+				str += "<li><a href='"+(pageMaker.pageEnd + 1)+"'> >> </a></li>";
 			}
 			$('.pagination').html(str);				
 		}

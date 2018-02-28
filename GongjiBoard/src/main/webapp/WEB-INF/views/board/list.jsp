@@ -8,8 +8,6 @@
 <!-- Bootstrap css -->
 <link href='<c:url value="/resources/bootstrap/css/bootstrap.min.css" />' rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<!-- Bootstrap js -->
-<script src="/resources/bootstrap/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
         $("#btnwrite").click(function(){//신규글 작성하기

@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 import com.mycom.dto.Criteria;
-
+import com.mycom.dto.ReplyPageVO;
 import com.mycom.dto.ReplyVO;
 
 @Repository
@@ -59,12 +59,12 @@ public class ReplyDAOImpl implements ReplyDAO {
     }
     
     @Override
-    public List<ReplyVO> listPage(Integer bno, Criteria cri) throws Exception {
+    public List<ReplyVO> listPage(int id, ReplyPageVO vo) throws Exception {
 
       Map<String, Object> paramMap = new HashMap<String, Object>();
 
-      paramMap.put("bno", bno);
-      paramMap.put("cri", cri);
+      paramMap.put("id", id);
+      paramMap.put("vo", vo);
 
       return sqlSession.selectList(Namespace + ".listPage", paramMap);
     }
