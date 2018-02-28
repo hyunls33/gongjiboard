@@ -1,0 +1,28 @@
+@charset "UTF-8";
+
+#link:hover{text-decoration: underline;}
+
+div.tablewrapper {
+	width : 810px;
+	margin : auto;
+}
+
+table.view_table {
+	 margin : auto;
+	 width : 800px;
+	 border : 1px solid black;
+}
+
+table.view_table th {
+	width : 70px;
+	border : 1px solid black;
+}
+
+table.view_table td {
+	border : 1px solid black;
+}
+
+div.button {
+	position : relative;
+	left : 665px;
+}
