@@ -85,5 +85,16 @@
     <select id="replyCount" resultType="Integer">
         SELECT COUNT(RNO) FROM GONGJI_COMMENT WHERE ID = #{id}
     </select>
+    
+    <select id="listPage" resultType="com.mycom.dto.ReplyVO">
+		select
+		*
+		from
+		GONGJI_COMMENT
+		where
+		ID = #{bno}
+		order by RNO desc
+		limit #{cri.pageStart}, #{cri.perPageNum}
+	</select>
 
 </mapper>

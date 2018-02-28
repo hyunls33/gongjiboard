@@ -2,6 +2,7 @@ package com.mycom.service;
 
 import java.util.List;
 
+import com.mycom.dto.Criteria;
 import com.mycom.dto.ReplyVO;
 
 public interface ReplyService {
@@ -16,4 +17,6 @@ public interface ReplyService {
     public void delete(int rno) throws Exception;
     //현재 게시물의 전체 댓글 수 조회
   	public int count(int id) throws Exception;
+  	
+  	public List<ReplyVO> listReplyPage(Integer bno, Criteria cri) throws Exception;
 }

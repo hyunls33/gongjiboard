@@ -32,7 +32,9 @@ public class GongjiServiceImpl implements GongjiService {
         // *공백문자 처리
         title = title.replace("  ",    "&nbsp;&nbsp;");
         // *줄바꿈 문자처리
-        content = content.replace("\n", "<br>");
+        //content = content.replace("\n", "<br>");
+        content = content.replace("<", "&lt;");
+        content = content.replace(">", "&gt;");
         vo.setTitle(title);
         vo.setContent(content);
 
@@ -57,7 +59,9 @@ public class GongjiServiceImpl implements GongjiService {
         // *공백문자 처리
         title = title.replace("  ",    "&nbsp;&nbsp;");
         // *줄바꿈 문자처리
-        content = content.replace("\n", "<br>");
+        //content = content.replace("\n", "<br>");
+        content = content.replace("<", "&lt;");
+        content = content.replace(">", "&gt;");
         vo.setTitle(title);
         vo.setContent(content);
         
@@ -79,7 +83,6 @@ public class GongjiServiceImpl implements GongjiService {
     //게시글 조회수 업데이트
 	@Override
 	public void updateViewcnt(int id) throws Exception {
-		// TODO Auto-generated method stub
 		dao.updateViewcnt(id);
 	}
 }

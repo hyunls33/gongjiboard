@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
+import com.mycom.dto.Criteria;
 
 import com.mycom.dto.ReplyVO;
 
@@ -55,5 +56,16 @@ public class ReplyDAOImpl implements ReplyDAO {
     @Override
     public int count(int id) throws Exception {
         return sqlSession.selectOne(Namespace+".replyCount");
+    }
+    
+    @Override
+    public List<ReplyVO> listPage(Integer bno, Criteria cri) throws Exception {
+
+      Map<String, Object> paramMap = new HashMap<String, Object>();
+
+      paramMap.put("bno", bno);
+      paramMap.put("cri", cri);
+
+      return sqlSession.selectList(Namespace + ".listPage", paramMap);
     }
 }

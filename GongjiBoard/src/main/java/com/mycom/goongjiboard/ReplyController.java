@@ -3,10 +3,8 @@ package com.mycom.goongjiboard;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
+import com.mycom.dto.Criteria;
+import com.mycom.dto.PageMaker;
 import com.mycom.dto.ReplyPageVO;
 import com.mycom.dto.ReplyVO;
 import com.mycom.service.ReplyService;
@@ -65,4 +64,37 @@ public class ReplyController {
 	public void delete(@RequestParam int rno) throws Exception {
 	    replyService.delete(rno);
 	}
+	
+	@RequestMapping(value = "board/reply/{id}/{page}", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> listPage(
+    @PathVariable("id") Integer id,
+    @PathVariable("page") Integer page) {
+
+	    ResponseEntity<Map<String, Object>> entity = null;
+	    
+	    try {
+		    Criteria cri = new Criteria();
+		    cri.setPage(page);
+		
+		    PageMaker pageMaker = new PageMaker();
+		    pageMaker.setCri(cri);
+		
+		    Map<String, Object> map = new HashMap<String, Object>();
+		    List<ReplyVO> list = replyService.listReplyPage(id, cri);
+		
+		    map.put("list", list);
+		
+		    int replyCount = replyService.count(id);
+		    pageMaker.setTotalCount(replyCount);
+		
+		    map.put("pageMaker", pageMaker);
+		
+		    entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+		
+	    } catch (Exception e) {
+		    e.printStackTrace();
+		    entity = new ResponseEntity<Map<String, Object>>(HttpStatus.BAD_REQUEST);
+	    }
+	    return entity;
+    }
 }

@@ -10,7 +10,8 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script>
 	$(document).ready(function(){
-        listReply2(); //댓글 목록 불러오기(json 리턴방식)
+        //listReply2(); //댓글 목록 불러오기(json 리턴방식)
+        getPageList(replyPage);
         
         //댓글 쓰기 버튼 클릭 이벤트 (ajax로 처리)
         $("#btnReply").click(function(){
@@ -27,7 +28,8 @@
                     data: param,
                     success: function(){                //작업이 성공시에만 실행함
                         alert("댓글이 등록되었습니다.");       //등록 알림
-                        listReply2();                   //목록 새로 불러오기
+                        //listReply2();                   //목록 새로 불러오기
+                        getPageList(replyPage);
                     }
                 });
             }
@@ -106,15 +108,70 @@
                 type : 'post',
                 data : {'replytext' : replytext, 'rno' : rno},
                 success : function(data){
-                	listReply2(); //댓글 수정후 목록 출력
+                	//listReply2(); //댓글 수정후 목록 출력
+                	getPageList(replyPage);
                 }
             });
     	}
     }
  	
+    function getPageList(page){
+		var id = ${dto.id};
+		  $.getJSON("${path}/gongjiboard/board/reply/"+id+"/"+page , function(data){
+			  
+			  console.log(data.list.length);
+			  
+			  var str ="";
+			  
+			  $(data.list).each(function(){
+				  str+= "<li data-rno='"+this.rno+"' class='replyLi'>" 
+				  +this.rno+":"+ this.replytext+
+				  "<button>MOD</button></li>";
+			  });
+			  
+			  $("#listReply").html(str);
+			  
+			  printPaging(data.pageMaker);
+			  
+		  });
+	  }		
+		
+		  
+		function printPaging(pageMaker){
+			
+			var str = "";
+			
+			if(pageMaker.prev){
+				str += "<li><a href='"+(pageMaker.startPage-1)+"'> << </a></li>";
+			}
+			
+			for(var i=pageMaker.startPage, len = pageMaker.endPage; i <= len; i++){				
+					var strClass= pageMaker.cri.page == i?'class=active':'';
+				  str += "<li "+strClass+"><a href='"+i+"'>"+i+"</a></li>";
+			}
+			
+			if(pageMaker.next){
+				str += "<li><a href='"+(pageMaker.endPage + 1)+"'> >> </a></li>";
+			}
+			$('.pagination').html(str);				
+		}
+		
+		var replyPage = 1;
+		
+		$(".pagination").on("click", "li a", function(event){
+			
+			event.preventDefault();
+			
+			replyPage = $(this).attr("href");
+			
+			getPageList(replyPage);
+			
+		});
+ 	
  	//댓글 수정 취소시에는 새로고침하기
     function replyUpdateCancel() {
-    	listReply2();//다시 목록 새로고침
+    	//listReply2();//다시 목록 새로고침
+    	getPageList(replyPage);
     }
   	
     //댓글 삭제 버튼 클릭 함수
@@ -125,7 +182,8 @@
             type : 'post',
             data: param,
             success : function(){
-            	listReply2(); //댓글 삭제후 목록 출력
+            	//listReply2(); //댓글 삭제후 목록 출력
+            	getPageList(replyPage);
             }
         });
     }
@@ -155,7 +213,7 @@
 			</tr>
 			<tr>
 				<th class='text-center' width='70px'>내용</th>
-				<td>${dto.content}</td>
+				<td><textarea readonly='readonly' style='resize:none; width:710px; height:300px;'>${dto.content}</textarea></td>
 			</tr>
 		</table>
 		<div class='text-right'>
@@ -173,6 +231,7 @@
 		<br><br>
 		<!-- **댓글 목록 출력할 위치 -->
 		<div id="listReply"></div>
+		<ul class='pagination'></ul>
 	</div>
 </body>
 </html>

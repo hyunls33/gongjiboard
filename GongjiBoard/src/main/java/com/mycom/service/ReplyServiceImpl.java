@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import com.mycom.dto.Criteria;
 
 import com.mycom.dao.ReplyDAO;
 import com.mycom.dto.ReplyVO;
@@ -29,20 +30,30 @@ public class ReplyServiceImpl implements ReplyService {
     //¥Ò±€ ¿€º∫
     @Override
     public void create(ReplyVO vo) throws Exception {
+    	String replyer = vo.getReplyer();
+    	String replytext = vo.getReplytext();
+    	replyer = replyer.replace("<", "&lt;");
+    	replyer = replyer.replace(">", "&gt;");
+    	replytext = replytext.replace("<", "&lt;");
+    	replytext = replytext.replace(">", "&gt;");
+    	
+    	vo.setReplyer(replyer);
+    	vo.setReplytext(replytext);
         replyDao.create(vo);
     }
     
     //¥Ò±€ ºˆ¡§
     @Override
     public void update(ReplyVO vo) throws Exception {
-        // TODO Auto-generated method stub
+    	String replytext = vo.getReplytext();
+    	replytext = replytext.replace("<", "&lt;");
+    	replytext = replytext.replace(">", "&gt;");
     	replyDao.update(vo);
     }
     
     //¥Ò±€ ªË¡¶
     @Override
     public void delete(int rno) throws Exception {
-        // TODO Auto-generated method stub
     	replyDao.delete(rno);
     }
  
@@ -50,5 +61,11 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
   	public int count(int id) throws Exception {
     	return replyDao.count(id);
+    }
+    
+    @Override
+    public List<ReplyVO> listReplyPage(Integer bno, Criteria cri) throws Exception {
+
+      return replyDao.listPage(bno, cri);
     }
 }
