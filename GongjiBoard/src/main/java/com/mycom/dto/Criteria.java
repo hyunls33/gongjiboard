@@ -36,8 +36,8 @@ public class Criteria {
 	
 	//method for MyBatis SQL Mapper - 
 	public int getPageStart() {
-		this.pageStart = (this.page -1)* perPageNum; 
-		return pageStart;
+		
+		return (this.page -1)* perPageNum;
 	}
 	
 	//method for MyBatis SQL Mapper 

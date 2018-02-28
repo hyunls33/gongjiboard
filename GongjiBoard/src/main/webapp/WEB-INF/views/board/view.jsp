@@ -10,8 +10,8 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script>
 	$(document).ready(function(){
-        //listReply2(); //댓글 목록 불러오기(json 리턴방식)
-        getPageList(replyPage);
+        listReply2(); //댓글 목록 불러오기(json 리턴방식)
+        //getPageList(replyPage);
         
         //댓글 쓰기 버튼 클릭 이벤트 (ajax로 처리)
         $("#btnReply").click(function(){
@@ -108,13 +108,13 @@
                 type : 'post',
                 data : {'replytext' : replytext, 'rno' : rno},
                 success : function(data){
-                	//listReply2(); //댓글 수정후 목록 출력
-                	getPageList(replyPage);
+                	listReply2(); //댓글 수정후 목록 출력
+                	//getPageList(replyPage);
                 }
             });
     	}
     }
- 	
+ 	/*
     function getPageList(page){
 		var id = ${dto.id};
 		console.log(id);
@@ -168,12 +168,12 @@
 			
 			getPageList(replyPage);
 			
-		});
+		});*/
  	
  	//댓글 수정 취소시에는 새로고침하기
     function replyUpdateCancel() {
-    	//listReply2();//다시 목록 새로고침
-    	getPageList(replyPage);
+    	listReply2();//다시 목록 새로고침
+    	//getPageList(replyPage);
     }
   	
     //댓글 삭제 버튼 클릭 함수
@@ -184,8 +184,8 @@
             type : 'post',
             data: param,
             success : function(){
-            	//listReply2(); //댓글 삭제후 목록 출력
-            	getPageList(replyPage);
+            	listReply2(); //댓글 삭제후 목록 출력
+            	//getPageList(replyPage);
             }
         });
     }
