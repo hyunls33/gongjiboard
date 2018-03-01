@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.mycom.mapper.replyMapper">
+    <!--               댓글 관련 처리                                      -->
+    <!-- 댓글 입력 -->
+    <insert id="insertReply">
+        INSERT INTO GONGJI_COMMENT (ID, REPLYTEXT, REPLYER)
+        VALUES (#{id}, #{replytext}, #{replyer})
+    </insert>
+    
+    <!-- 댓글 목록 -->
+    <select id="listReply" resultType="com.mycom.dto.ReplyVO">
+        SELECT A.RNO, A.ID, A.REPLYTEXT, A.REPLYER, A.REGDATE
+        FROM (SELECT RNO, ID, REPLYTEXT, REPLYER, REGDATE FROM GONGJI_COMMENT WHERE ID=#{id} ORDER BY RNO) AS A
+        WHERE A.RNO LIMIT ${start},10
+    </select>
+    
+    <!-- 댓글 수정 처리 -->
+    <update id="updateReply">
+        UPDATE GONGJI_COMMENT SET REPLYTEXT = #{replytext}
+        WHERE RNO = #{rno}
+    </update>
+    
+    <!-- 댓글 삭제 처리 -->
+    <delete id="deleteReply">
+        DELETE FROM GONGJI_COMMENT
+        WHERE RNO = #{rno}
+    </delete>
+    
+    <!-- 게시글 삭제 시 해당 게시물의 댓글도 삭제처리 -->
+    <delete id="deleteGongjiReply">
+        DELETE FROM GONGJI_COMMENT
+        WHERE ID = #{id}
+    </delete>
+    
+    <!-- 해당 게시물의 전체 댓글 수 조회 -->
+    <select id="replyCount" resultType="Integer">
+        SELECT COUNT(RNO) FROM GONGJI_COMMENT WHERE ID = #{id}
+    </select>
+    
+    <!-- 댓글 페이지 처리... -->
+    <select id="listPage" resultType="com.mycom.dto.ReplyVO">
+		SELECT A.RNO, A.ID, A.REPLYTEXT, A.REPLYER, A.REGDATE 
+		FROM (SELECT RNO, ID, REPLYTEXT, REPLYER, REGDATE FROM GONGJI_COMMENT WHERE ID = #{id} ORDER BY RNO) AS A
+		LIMIT #{vo.start},10
+	</select>
+
+</mapper>

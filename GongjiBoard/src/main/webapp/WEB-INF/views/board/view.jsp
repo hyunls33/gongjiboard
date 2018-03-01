@@ -9,9 +9,9 @@
 <link href='<c:url value="/resources/bootstrap/css/bootstrap.min.css" />' rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script>
+	var nowPage = 0;
 	$(document).ready(function(){
-        listReply2(); //댓글 목록 불러오기(json 리턴방식)
-        //getPageList(replyPage);
+        listReply2(nowPage); //댓글 목록 불러오기(json 리턴방식)
         
         //댓글 쓰기 버튼 클릭 이벤트 (ajax로 처리)
         $("#btnReply").click(function(){
@@ -28,8 +28,7 @@
                     data: param,
                     success: function(){                //작업이 성공시에만 실행함
                         alert("댓글이 등록되었습니다.");       //등록 알림
-                        //listReply2();                   //목록 새로 불러오기
-                        getPageList(replyPage);
+                        listReply2(nowPage);                   //목록 새로 불러오기
                     }
                 });
             }
@@ -55,32 +54,72 @@
 	
     //RestController방식 (Json)
     //댓글 목록 조회 (json)
-    function listReply2(){
+    function listReply2(check){
+    	if (check == 0) {      //페이지 수가 0일 경우
+    		nowPage = 1;       //페이지 1로 지정
+    	} else {               //아닌경우
+    		nowPage = check;   //해당 페이지로 현재페이지 지정
+    	}
         $.ajax({
             type: "get",
             //contentType: "application/json", ==> 생략가능(RestController이기때문에 가능)
-            url: "${path}/gongjiboard/board/reply/listJson?id=${dto.id}",
-            success: function(result){      //작업이 성공시에만 실행함
-                console.log(result);
+            url: "${path}/gongjiboard/board/reply/listJson?id=${dto.id}&curPage="+nowPage,
+            success: function(result){//작업이 성공시에만 실행함
                 var output = "<table class='table' style='width:800px;'>";//변수에 결과를 테이블형식으로 저장하기
-                for(var i in result){
+                for(var i in result.list){//hashmap으로 넘어온 값 중에 list인 값만 사용
                     output += "<tr>";
-                    output += "<td class='td_"+result[i].rno+"'>";
-                    output += "<span id='replyer_"+result[i].rno+"'>"+result[i].replyer+"</span>";
-                    output += "(<span id='regdate_"+result[i].rno+"'>"+result[i].regdate+"</span>)";
+                    output += "<td class='td_"+result.list[i].rno+"'>";
+                    output += "<span id='replyer_"+result.list[i].rno+"'>"+result.list[i].replyer+"</span>";
+                    output += "(<span id='regdate_"+result.list[i].rno+"'>"+result.list[i].regdate+"</span>)";
                     output += "<div style='float:right;'>";
-                    output += "<input type='button' class='btn btn-default btn-sm' value='수정' onclick='replyUpdate("+result[i].rno+")' /> ";
-                    output += "<input type='button' class='btn btn-default btn-sm' value='삭제' onclick='replyDelete("+result[i].rno+")' />";
+                    output += "<input type='button' class='btn btn-default btn-sm' value='수정' onclick='replyUpdate("+result.list[i].rno+")' /> ";
+                    output += "<input type='button' class='btn btn-default btn-sm' value='삭제' onclick='replyDelete("+result.list[i].rno+")' />";
                     output += "</div><br>";
-                    output += "<div class='replyin_"+result[i].rno+"'>"+result[i].replytext+"</div></td>";
+                    output += "<div class='replyin_"+result.list[i].rno+"'>"+result.list[i].replytext+"</div></td>";
                     output += "<tr>";
                 }
                 output += "</table>";
-                $("#listReply").html(output);//id가 listReply인 div안에 결과를 테이블로 출력하기
+                $("#listReply").html(output);//id가 listReply인 div안에 결과를 테이블로 출력하기 
+                
+                printReplyPage(result.page);//hashmap으로 넘어온 값 중에 page인 값만 보내기(페이징 처리하기위해서)
             }
         });
     }
     
+    //댓글 페이징 처리
+    function printReplyPage(page) {
+    	var p = "";
+
+		//맨 첫페이지로 돌아가기
+    	if (page.curPage > 1) {
+    		p += '<li class="page-item"><a class="page-link" onclick="listReply2(1)">«</a></li>';
+    	}
+		//이전 블록으로 돌아가기
+    	if (page.curBlock > 1) {
+    		p += "<li class='page-item'><a class='page-link' onclick='listReply2("+page.prevPage+")'>‹</a></li>";
+    	}
+
+		//페이지 숫자 출력
+    	for (var i = page.blockStart; i <= page.blockEnd; i++) {
+    		if (i != nowPage) {
+    			p += "<li class='page-item'><a class='page-link' onclick='listReply2("+i+");'>"+i+"</a></li>";
+    		} else {
+    			p += "<li class='page-item active'><span class='page-link'>"+i+"</span></li>";
+    		}
+    	}
+    	
+		//다음 블록으로 넘어가기
+    	if (page.curBlock < page.totBlock) {
+    		p += "<li class='page-item'><a class='page-link' onclick='listReply2("+page.nextPage+")'>›</a></li>";
+    	}
+		//맨 마지막페이지로 돌아가기
+		if (page.curPage < page.totPage) {
+			p += "<li class='page-item'><a class='page-link' onclick='listReply2("+page.totPage+")'>»</a></li>";
+    	}
+		
+    	$("#printReplyList").html(p);//id가 printReplyList인 div안에 댓글 페이징 출력하기 
+    }
+	
   	//댓글 수정 버튼 클릭 함수(수정 가능한 입력창으로 전환하기)
     function replyUpdate(rno){
   		var replyer = $("#replyer_"+rno).text();//작성자명 가져오기(div안의 값 가져오기)
@@ -95,7 +134,6 @@
   		a += "</div><br>";
    	 	a += "<textarea class='form-control' id='replytext_"+rno+"' style='resize:none;'>"+replytext+"</textarea>";
    	    
-   	    
    	    $(".td_"+rno).html(a);
     }
  	
@@ -108,72 +146,15 @@
                 type : 'post',
                 data : {'replytext' : replytext, 'rno' : rno},
                 success : function(data){
-                	listReply2(); //댓글 수정후 목록 출력
-                	//getPageList(replyPage);
+                	listReply2(nowPage); //댓글 수정후 목록 출력
                 }
             });
     	}
     }
- 	/*
-    function getPageList(page){
-		var id = ${dto.id};
-		console.log(id);
-		  $.getJSON("${path}/gongjiboard/board/reply/"+id+"/"+page , function(data){
-			  
-			  console.log(data.list.length);
-			  console.log(page);
-			  
-			  var str ="";
-			  
-			  $(data.list).each(function(){
-				  str+= "<li data-rno='"+this.rno+"' class='replyLi'>" 
-				  +this.rno+":"+ this.replytext+
-				  "<button>MOD</button></li>";
-			  });
-			  
-			  $("#listReply").html(str);
-			  
-			  printPaging(data.pageMaker);
-			  
-		  });
-	  }		
-		
-		  
-		function printPaging(pageMaker){
-			console.log(pageMaker);
-			var str = "";
-			
-			if(pageMaker.prevBlock){
-				str += "<li><a href='"+(pageMaker.pageBegin)+"'> << </a></li>";
-			}
-			
-			for(var i=pageMaker.pageBegin, len = pageMaker.pageEnd; i <= len; i++){				
-					var strClass= pageMaker.curPage == i?'class=active':'';
-				  str += "<li "+strClass+"><a href='"+i+"'>"+i+"</a></li>";
-			}
-			
-			if(pageMaker.nextBlock){
-				str += "<li><a href='"+(pageMaker.pageEnd + 1)+"'> >> </a></li>";
-			}
-			$('.pagination').html(str);				
-		}
-		
-		var replyPage = 1;
-		
-		$(".pagination").on("click", "li a", function(event){
-			
-			event.preventDefault();
-			
-			replyPage = $(this).attr("href");
-			
-			getPageList(replyPage);
-			
-		});*/
  	
  	//댓글 수정 취소시에는 새로고침하기
     function replyUpdateCancel() {
-    	listReply2();//다시 목록 새로고침
-    	//getPageList(replyPage);
+    	listReply2(nowPage);//다시 목록 새로고침
     }
   	
     //댓글 삭제 버튼 클릭 함수
@@ -184,8 +165,7 @@
             type : 'post',
             data: param,
             success : function(){
-            	listReply2(); //댓글 삭제후 목록 출력
-            	//getPageList(replyPage);
+            	listReply2(nowPage); //댓글 삭제후 목록 출력
             }
         });
     }
@@ -223,7 +203,7 @@
 			<input type='button' class="btn btn-default btn-sm" value='수정' id='btnupdate' />
 			<input type='button' class="btn btn-default btn-sm" value='삭제' id='btndelete' />
 		</div>
-		<!-- **댓글 목록 출력할 위치 -->
+		
 		<!-- 댓글 부분 -->
 		<br>
 		<input type='text' id='replyer' style='width:800px;' placeholder="작성자이름" /><br>
@@ -231,9 +211,11 @@
 		<br><br>
 		<button type="button" class="btn btn-default btn-sm" style='float:right;' id="btnReply">댓글 작성</button>
 		<br><br>
-		<!-- **댓글 목록 출력할 위치 -->
+		
+		<!-- 댓글 목록 출력할 위치 -->
 		<div id="listReply"></div>
-		<ul class='pagination'></ul>
+		<!-- 댓글 페이징 출력할 위치 -->
+		<ul id='printReplyList' class='pagination pagination-sm justify-content-center'></ul>
 	</div>
 </body>
 </html>

@@ -1,6 +1,8 @@
 package com.mycom.dto;
 
-public class PageVO {
+import java.lang.Math;
+
+public class RPageVO {
 	public static final int PAGE_SCALE = 10; // 페이지당 게시물 수
     public static final int BLOCK_SCALE = 10; // 블록당 페이지수
  
@@ -98,7 +100,7 @@ public class PageVO {
     }
  
     // 생성자
-    public PageVO(int count, int curPage) {
+    public RPageVO(int count, int curPage) {
  
         curBlock = 1;             // 현재 페이지 블록을 1로 설정
         this.curPage = curPage;   // 현재 페이지 번호 설정
@@ -142,7 +144,7 @@ public class PageVO {
     // 전체 페이지 블록 갯수 계산
     public void setTotBlock() {
  
-        totBlock = (int) Math.ceil(totPage / BLOCK_SCALE);
+        totBlock = (int) Math.ceil(totPage * 1.0 / BLOCK_SCALE);
  
     }
  
@@ -152,12 +154,15 @@ public class PageVO {
     	
         if (curPage > totPage) {
         	//만약 입력받은 페이지 번호가 전체 페이지의 범위를 초과할 경우, 마지막 페이지를 반환함
-        	pageBegin = (totPage - 1) * PAGE_SCALE;
+        	this.pageBegin = (totPage - 1) * PAGE_SCALE;
         } else {
         	//아닐 경우에는 입력받은 현재페이지로 반환
-        	pageBegin = (curPage - 1) * PAGE_SCALE;
+        	this.pageBegin = (curPage - 1) * PAGE_SCALE;
         }
+        
         pageEnd = pageBegin + PAGE_SCALE - 1;
  
     }
+
+
 }

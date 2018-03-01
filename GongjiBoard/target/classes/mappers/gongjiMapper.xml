@@ -5,11 +5,11 @@
  
 <mapper namespace="com.mycom.mapper.gongjiMapper">
 	<!--               게시물 관련 처리                                      -->
-	<!-- 게시글 목록 조회 -->
+	<!-- 게시글 목록 조회(댓글 수도 같이 조회) -->
 	<select id="selectGongji" resultType="GongjiVO">
         SELECT A.ID, A.TITLE, A.VIEWCNT, A.DATE, (SELECT COUNT(RNO) FROM GONGJI_COMMENT WHERE ID=A.ID) AS RECNT
         FROM (SELECT ID, TITLE, VIEWCNT, DATE_FORMAT(DATE,'%Y-%m-%d') AS DATE FROM GONGJI ORDER BY ID DESC) AS A
-        LIMIT ${start},10
+        WHERE A.ID LIMIT ${start},10
     </select>
     
     <!-- 게시글 작성 -->
@@ -48,48 +48,4 @@
             VIEWCNT = VIEWCNT + 1
         WHERE ID = #{id}
     </update>
-    
-    <!--               댓글 관련 처리                                      -->
-    <!-- 댓글 입력 -->
-    <insert id="insertReply">
-        INSERT INTO GONGJI_COMMENT (ID, REPLYTEXT, REPLYER)
-        VALUES (#{id}, #{replytext}, #{replyer})
-    </insert>
-    
-    <!-- 댓글 목록 -->
-    <!--<select id="listReply" resultType="com.mycom.dto.ReplyVO">
-        SELECT A.RNO, A.ID, A.REPLYTEXT, A.REPLYER, A.REGDATE
-        FROM (SELECT RNO, ID, REPLYTEXT, REPLYER, REGDATE FROM GONGJI_COMMENT WHERE ID=#{id} ORDER BY RNO) AS A
-        LIMIT ${start},10
-    </select> -->
-    <select id="listReply" resultType="com.mycom.dto.ReplyVO">
-        SELECT RNO, ID, REPLYTEXT, REPLYER, REGDATE
-        FROM GONGJI_COMMENT
-        WHERE ID=#{id}
-        ORDER BY RNO
-    </select>
-    
-    <!-- 댓글 수정 처리 -->
-    <update id="updateReply">
-        UPDATE GONGJI_COMMENT SET REPLYTEXT = #{replytext}
-        WHERE RNO = #{rno}
-    </update>
-    
-    <!-- 댓글 삭제 처리 -->
-    <delete id="deleteReply">
-        DELETE FROM GONGJI_COMMENT
-        WHERE RNO = #{rno}
-    </delete>
-    
-    <!-- 해당 게시물의 전체 댓글 수 조회 -->
-    <select id="replyCount" resultType="Integer">
-        SELECT COUNT(RNO) FROM GONGJI_COMMENT WHERE ID = #{id}
-    </select>
-    
-    <select id="listPage" resultType="com.mycom.dto.ReplyVO">
-		SELECT A.RNO, A.ID, A.REPLYTEXT, A.REPLYER, A.REGDATE 
-		FROM (SELECT RNO, ID, REPLYTEXT, REPLYER, REGDATE FROM GONGJI_COMMENT WHERE ID = #{id} ORDER BY RNO) AS A
-		LIMIT #{vo.curPage},10
-	</select>
-
 </mapper>
