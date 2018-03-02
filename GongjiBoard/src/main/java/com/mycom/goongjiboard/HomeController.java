@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import com.mycom.dto.GongjiVO;
 import com.mycom.dto.PageVO;
+import com.mycom.hibernate.GongjiProvider;
+import com.mycom.hibernate.GongjiProviderImpl;
 import com.mycom.service.GongjiService;
 import com.mycom.service.ReplyService;
 
@@ -32,6 +34,8 @@ public class HomeController {
 	
 	@Inject
 	private ReplyService re_service; //댓글 처리 서비스(게시물 삭제시에만 이용)
+	
+	private static GongjiProvider provider;  //hibernate사용하기 위한provider선언
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -51,6 +55,11 @@ public class HomeController {
         nowPage = curPage;
  
         int start = pageVO.getPageBegin();                //select 시작할 번호 페이지 클래스에서 받아오기
+        System.out.println(start);
+        System.out.println(count);
+        if (start < 0) {
+        	start = 0;
+        }
         List<GongjiVO> list = service.selectGongji(start);//select할 시작 번호 보내주기
         
         model.addAttribute("list", list);                 //게시물 정보 저장
@@ -102,7 +111,9 @@ public class HomeController {
 	//신규글 작성처리
 	@RequestMapping(value="board/insert", method=RequestMethod.POST)
 	public String insertshow(@ModelAttribute GongjiVO vo) throws Exception {
-		service.insertGongji(vo);                         //게시물 등록 처리
+		//service.insertGongji(vo);                       //게시물 등록 처리(mybatis용)
+		provider = new GongjiProviderImpl();
+		provider.insertUser(vo);                          //게시물 등록 처리(hibernate용)
         return "redirect:list";                           //작성처리 후에는 목록화면으로 돌아가기
 	}
 	

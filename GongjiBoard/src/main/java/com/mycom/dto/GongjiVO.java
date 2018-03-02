@@ -1,17 +1,17 @@
 package com.mycom.dto;
 
 public class GongjiVO {
-	private String id;        //게시글 번호
+	private int id;           //게시글 번호
     private String title;     //게시글 제목
     private String date;      //게시글 작성 날짜
     private String content;   //게시글 내용
     private int viewcnt;      //게시글 조회 수 
     private int recnt;        //게시글 댓글의 수
     
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getTitle() {
