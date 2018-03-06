@@ -5,6 +5,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- viewport : 기본 크기를 핸드폰 기계의 크기에 맞춤 -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Bootstrap css -->
 <link href='<c:url value="/resources/bootstrap/css/bootstrap.min.css" />' rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -16,34 +18,37 @@
         });
     });
 </script>
+<style>
+	th { background-color:#d9edf7;}
+</style>
 </head>
 <body>
 	<h1 class='text-center'>게시판</h1>
 	<br>
 	<!--테이블 생성 및 헤더부분 출력-->
-	<div style='width:800px; margin:auto;'>
-	<table class='table table-hover table-bordered table-sm' width='800px'>
+	<div style='width:100%; margin:auto;'>
+	<table class='table table-hover table-bordered table-sm' width='100%'>
 		<thead>
 			<tr class='text-center'>
-			<th width='70px'>번호</th>
+			<th width='50px'>번호</th>
 			<th>제목</th>
-			<th width='70px'>조회수</th>
-			<th width='150px'>등록일</th>
+			<th width='60px'>조회수</th>
+			<th width='110px'>등록일</th>
 			</tr>
 		</thead>
 		<tbody>
 	        <c:forEach items="${list}" var="gongji">
 	        	<!-- 각 줄 클릭시 이동 -->
 	            <tr onclick=location.href='${path}/gongjiboard/board/view/${gongji.id}'>
-	            	<td id='num' class='text-center' width='70px'>${gongji.id}</td>
+	            	<td id='num' class='text-center'>${gongji.id}</td>
 	                <td>${gongji.title}
 	                	<!-- ** 댓글이 있으면 게시글 이름 옆에 출력하기 -->
 	                    <c:if test="${gongji.recnt > 0}">
 	                    	<span style='color: red;'>(${gongji.recnt})</span>
 	                    </c:if>
 	                </td>
-	                <td class='text-center' width='70px'>${gongji.viewcnt}</td>
-	                <td class='text-center' width='150px'>${gongji.date}</td>
+	                <td class='text-center'>${gongji.viewcnt}</td>
+	                <td class='text-center'>${gongji.date}</td>
 	            </tr>
 	        </c:forEach>
         </tbody>
