@@ -5,6 +5,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- viewport : 기본 크기를 핸드폰 기계의 크기에 맞춤 -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Bootstrap css -->
 <link href='<c:url value="/resources/bootstrap/css/bootstrap.min.css" />' rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -46,22 +48,25 @@
 		}
 	}
 </script>
+<style>
+	th { width:50px; background-color:#d9edf7;}
+</style>
 </head>
 <body>
 	<h1 class='text-center'>게시판</h1>
 	<br>
-	<div style='width:800px; margin:auto;'>
+	<div style='width:100%; margin:auto;'>
 	<form name='data' method='post' action='${path}/gongjiboard/board/insert'>
-	<table class='table table-bordered table-sm' width='800px'>
+	<table class='table table-bordered table-sm' width='100%'>
 		<tr>
-		<th class='text-center' width='70px'>제목</th>
-		<td><input type='text' name='title' id='title' maxlength='40' style='width:710px;' required /></td>
+		<th class='text-center'>제목</th>
+		<td><input type='text' name='title' id='title' maxlength='40' style='width:95%;' required /></td>
 		</tr>
 		<tr>
-		<th class='text-center' width='70px'>내용</th>
+		<th class='text-center'>내용</th>
 		<!--onKeyUp / onKeyDown으로 글 작성시 키를 누르면 실시간으로 글자수를 제한하는 함수 생성-->
 		<td>
-		<textarea name='content' id='content' style='resize:none; width:710px; height:300px;' onKeyUp='checkLength(this);'
+		<textarea name='content' id='content' style='resize:none; width:95%; height:300px;' onKeyUp='checkLength(this);'
 				  onKeyDown='checkLength(this);'></textarea>
 		</td>
 		</tr>
