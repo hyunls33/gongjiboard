@@ -45,29 +45,32 @@
 		}
 	}
 </script>
+<style>
+	th { width:50px; background-color:#d9edf7;}
+</style>
 </head>
 <body>
 	<h1 class='text-center'>게시판</h1>
 	<br>
-	<div style='width:800px; margin:auto;'>
+	<div style='width:100%; margin:auto;'>
 	<form name='data' method='post' action='${path}/gongjiboard/board/update.data'>
-	<table class='table table-bordered table-sm' width='800px'>
+	<table class='table table-bordered table-sm' width='100%'>
 	<tr>
-	<th class='text-center' width='70px'>번호</th>
+	<th class='text-center'>번호</th>
 	<td><input type='text' name='id' id='id' value='${data.id}' readonly /></td>
 	</tr>
 	<tr>
-	<th class='text-center' width='70px'>제목</th>
-	<td><input type='text' name='title' id='title' value='${data.title}' maxlength='40' style='width:710px;' required /></td>
+	<th class='text-center'>제목</th>
+	<td><input type='text' name='title' id='title' value='${data.title}' maxlength='40' style='width:95%;' required /></td>
 	</tr>
 	<tr>
-	<th class='text-center' width='70px'>일자</th>
+	<th class='text-center'>일자</th>
 	<td>${data.date}</td>
 	</tr>
 	<tr>
-	<th class='text-center' width='70px'>내용</th>
+	<th class='text-center'>내용</th>
 	<td>
-	<textarea name='content' id='content' style='resize:none; width:710px; height:300px;' onKeyUp='checkLength(this);'
+	<textarea name='content' id='content' style='resize:none; width:95%; height:300px;' onKeyUp='checkLength(this);'
 				  onKeyDown='checkLength(this);'>${data.content}</textarea>
 	</td>
 	</tr>
