@@ -5,6 +5,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- viewport : 기본 크기를 핸드폰 기계의 크기에 맞춤 -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Bootstrap css -->
 <link href='<c:url value="/resources/bootstrap/css/bootstrap.min.css" />' rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -65,7 +67,7 @@
             //contentType: "application/json", ==> 생략가능(RestController이기때문에 가능)
             url: "${path}/gongjiboard/board/reply/listJson?id=${dto.id}&curPage="+nowPage,
             success: function(result){//작업이 성공시에만 실행함
-                var output = "<table class='table' style='width:800px;'>";//변수에 결과를 테이블형식으로 저장하기
+                var output = "<table class='table' style='width:100%;'>";//변수에 결과를 테이블형식으로 저장하기
                 for(var i in result.list){//hashmap으로 넘어온 값 중에 list인 값만 사용
                     output += "<tr>";
                     output += "<td class='td_"+result.list[i].rno+"'>";
@@ -171,31 +173,34 @@
     }
 
 </script>
+<style>
+	th { background-color:#d9edf7;}
+</style>
 </head>
 <body>
 	<h1 class='text-center'>게시판</h1>
 	<br>
-	<div style='width:800px; margin:auto;'>
-		<table class='table table-bordered table-sm' width='800px'>
+	<div style='width:100%; margin:auto;'>
+		<table class='table table-bordered table-sm' width='100%'>
 			<tr>
-				<th class='text-center' width='70px'>번호</th>
+				<th class='text-center'>번호</th>
 				<td>${dto.id}</td>
 			</tr>
 			<tr>
-				<th class='text-center' width='70px'>제목</th>
+				<th class='text-center' width='50px'>제목</th>
 				<td>${dto.title}</td>
 			</tr>
 			<tr>
-				<th class='text-center' width='70px'>조회수</th>
+				<th class='text-center' width='60px'>조회수</th>
 				<td>${dto.viewcnt}</td>
 			</tr>
 			<tr>
-				<th class='text-center' width='70px'>일자</th>
+				<th class='text-center' width='50px'>일자</th>
 				<td>${dto.date}</td>
 			</tr>
 			<tr>
-				<th class='text-center' width='70px'>내용</th>
-				<td><textarea readonly='readonly' style='resize:none; width:710px; height:300px;'>${dto.content}</textarea></td>
+				<th class='text-center' width='50px'>내용</th>
+				<td><textarea readonly='readonly' style='resize:none; width:95%; height:300px;'>${dto.content}</textarea></td>
 			</tr>
 		</table>
 		<div class='text-right'>
@@ -206,8 +211,8 @@
 		
 		<!-- 댓글 부분 -->
 		<br>
-		<input type='text' id='replyer' style='width:800px;' placeholder="작성자이름" /><br>
-		<textarea rows="3" cols="80" style='width:800px; resize:none;' id="replytext" placeholder="댓글을 작성해주세요"></textarea>
+		<input type='text' id='replyer' style='width:100%;' placeholder="작성자이름" /><br>
+		<textarea rows="3" cols="80" style='width:100%; resize:none;' id="replytext" placeholder="댓글을 작성해주세요"></textarea>
 		<br><br>
 		<button type="button" class="btn btn-default btn-sm" style='float:right;' id="btnReply">댓글 작성</button>
 		<br><br>
