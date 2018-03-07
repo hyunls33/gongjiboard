@@ -9,7 +9,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Bootstrap css -->
 <link href='<c:url value="/resources/bootstrap/css/bootstrap.min.css" />' rel="stylesheet">
+<!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- jquerymobile -->
+<link rel="stylesheet" href='<c:url value="/resources/jquerymobile/jquery.mobile-1.4.5.min.css" />' rel="stylesheet" />
+<script src='<c:url value="/resources/jquerymobile/jquery-1.11.1.min.js" />'></script>
+<script src='<c:url value="/resources/jquerymobile/jquery.mobile-1.4.5.min.js" />'></script>
 <script>
     $(document).ready(function(){
         $("#btnwrite").click(function(){//신규글 작성하기
@@ -23,8 +28,9 @@
 </style>
 </head>
 <body>
-	<h1 class='text-center'>게시판</h1>
-	<br>
+	<div data-role="header">
+		<h2 class='text-center'>게시판</h2>
+	</div>
 	<!--테이블 생성 및 헤더부분 출력-->
 	<div style='width:100%; margin:auto;'>
 	<table class='table table-hover table-bordered table-sm' width='100%'>
@@ -97,7 +103,7 @@
 	</c:if>
 	</ul>
 	<div class='text-right'>
-	<input type='button' value='신규' class="btn btn-default btn-sm" id='btnwrite' />
+		<input type='button' value='신규' class="btn btn-default btn-sm" id='btnwrite' data-mini="true" data-inline="true" />
 	</div>
 	</div>
 </body>

@@ -5,11 +5,16 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- viewport : 기본 크기를 핸드폰 기계의 크기에 맞춤 -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Bootstrap css -->
 <link href='<c:url value="/resources/bootstrap/css/bootstrap.min.css" />' rel="stylesheet">
+<!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<!-- Bootstrap js -->
-<script src="/resources/bootstrap/js/bootstrap.min.js"></script>
+<!-- jquerymobile -->
+<link rel="stylesheet" href='<c:url value="/resources/jquerymobile/jquery.mobile-1.4.5.min.css" />' rel="stylesheet" />
+<script src='<c:url value="/resources/jquerymobile/jquery-1.11.1.min.js" />'></script>
+<script src='<c:url value="/resources/jquerymobile/jquery.mobile-1.4.5.min.js" />'></script>
 <script>
 	$(document).ready(function(){
 		$("#btnlist").click(function(){
@@ -46,36 +51,37 @@
 	}
 </script>
 <style>
-	th { width:50px; background-color:#d9edf7;}
+	th { width:50px; background-color:#d9edf7; text-align:center;}
 </style>
 </head>
 <body>
-	<h1 class='text-center'>게시판</h1>
-	<br>
+	<div data-role="header">
+		<h2 class='text-center'>게시판</h2>
+	</div>
 	<div style='width:100%; margin:auto;'>
 	<form name='data' method='post' action='${path}/gongjiboard/board/update.data'>
 	<table class='table table-bordered table-sm' width='100%'>
 	<tr>
-	<th class='text-center'>번호</th>
+	<th>번호</th>
 	<td><input type='text' name='id' id='id' value='${data.id}' readonly /></td>
 	</tr>
 	<tr>
-	<th class='text-center'>제목</th>
+	<th>제목</th>
 	<td><input type='text' name='title' id='title' value='${data.title}' maxlength='40' style='width:95%;' required /></td>
 	</tr>
 	<tr>
-	<th class='text-center'>일자</th>
+	<th>일자</th>
 	<td>${data.date}</td>
 	</tr>
 	<tr>
-	<th class='text-center'>내용</th>
+	<th>내용</th>
 	<td>
 	<textarea name='content' id='content' style='resize:none; width:95%; height:300px;' onKeyUp='checkLength(this);'
 				  onKeyDown='checkLength(this);'>${data.content}</textarea>
 	</td>
 	</tr>
 	</table>
-	<div class='text-right'>
+	<div class='text-right' data-role="controlgroup" data-type="horizontal" data-mini="true">
 		<input type='button' class="btn btn-default btn-sm" value='취소' id='btnlist' />
 		<input type='button' class="btn btn-default btn-sm" value='수정' id='btnupdate' />
 	</div>

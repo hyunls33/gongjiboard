@@ -2,7 +2,7 @@ package com.mycom.dto;
 
 public class PageVO {
 	public static final int PAGE_SCALE = 10; // 페이지당 게시물 수
-    public static final int BLOCK_SCALE = 10; // 블록당 페이지수
+    public static final int BLOCK_SCALE = 5; // 블록당 페이지수
  
     private int curPage;    //현재 페이지 번호
     private int prevPage;   //이전 페이지

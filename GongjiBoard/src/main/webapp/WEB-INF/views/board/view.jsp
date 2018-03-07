@@ -9,7 +9,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Bootstrap css -->
 <link href='<c:url value="/resources/bootstrap/css/bootstrap.min.css" />' rel="stylesheet">
+<!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- jquerymobile -->
+<link rel="stylesheet" href='<c:url value="/resources/jquerymobile/jquery.mobile-1.4.5.min.css" />' rel="stylesheet" />
+<script src='<c:url value="/resources/jquerymobile/jquery-1.11.1.min.js" />'></script>
+<script src='<c:url value="/resources/jquerymobile/jquery.mobile-1.4.5.min.js" />'></script>
 <script>
 	var nowPage = 0;
 	$(document).ready(function(){
@@ -30,7 +35,7 @@
                     data: param,
                     success: function(){                //작업이 성공시에만 실행함
                         alert("댓글이 등록되었습니다.");       //등록 알림
-                        listReply2(nowPage);                   //목록 새로 불러오기
+                        listReply2(nowPage);            //목록 새로 불러오기
                     }
                 });
             }
@@ -178,8 +183,9 @@
 </style>
 </head>
 <body>
-	<h1 class='text-center'>게시판</h1>
-	<br>
+	<div data-role="header">
+	<h2 class='text-center'>게시판</h2>
+	</div>
 	<div style='width:100%; margin:auto;'>
 		<table class='table table-bordered table-sm' width='100%'>
 			<tr>
@@ -203,7 +209,7 @@
 				<td><textarea readonly='readonly' style='resize:none; width:95%; height:300px;'>${dto.content}</textarea></td>
 			</tr>
 		</table>
-		<div class='text-right'>
+		<div class='text-right' data-role="controlgroup" data-type="horizontal" data-mini="true">
 			<input type='button' class="btn btn-default btn-sm" value='목록' id='btnlist' />
 			<input type='button' class="btn btn-default btn-sm" value='수정' id='btnupdate' />
 			<input type='button' class="btn btn-default btn-sm" value='삭제' id='btndelete' />
@@ -211,10 +217,13 @@
 		
 		<!-- 댓글 부분 -->
 		<br>
-		<input type='text' id='replyer' style='width:100%;' placeholder="작성자이름" /><br>
-		<textarea rows="3" cols="80" style='width:100%; resize:none;' id="replytext" placeholder="댓글을 작성해주세요"></textarea>
-		<br><br>
-		<button type="button" class="btn btn-default btn-sm" style='float:right;' id="btnReply">댓글 작성</button>
+		<div data-role="fieldcontain">
+			<input type='text' id='replyer' style='width:100%;' placeholder="작성자이름" />
+			<textarea rows="3" cols="80" style='width:100%; resize:none;' id="replytext" placeholder="댓글을 작성해주세요"></textarea>
+			<div class='text-right'>
+				<input type="button" class="btn btn-default btn-sm" value="댓글 작성" id="btnReply" data-mini="true" data-inline="true" />
+			</div>
+		</div>
 		<br><br>
 		
 		<!-- 댓글 목록 출력할 위치 -->

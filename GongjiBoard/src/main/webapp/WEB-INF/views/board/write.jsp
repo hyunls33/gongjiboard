@@ -9,9 +9,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Bootstrap css -->
 <link href='<c:url value="/resources/bootstrap/css/bootstrap.min.css" />' rel="stylesheet">
+<!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<!-- Bootstrap js -->
-<script src="/resources/bootstrap/js/bootstrap.min.js"></script>
+<!-- jquerymobile -->
+<link rel="stylesheet" href='<c:url value="/resources/jquerymobile/jquery.mobile-1.4.5.min.css" />' rel="stylesheet" />
+<script src='<c:url value="/resources/jquerymobile/jquery-1.11.1.min.js" />'></script>
+<script src='<c:url value="/resources/jquerymobile/jquery.mobile-1.4.5.min.js" />'></script>
 <script>
 	$(document).ready(function(){
 	    $("#btninsert").click(function(){
@@ -53,8 +56,9 @@
 </style>
 </head>
 <body>
-	<h1 class='text-center'>게시판</h1>
-	<br>
+	<div data-role="header">
+	<h2 class='text-center'>게시판</h2>
+	</div>
 	<div style='width:100%; margin:auto;'>
 	<form name='data' method='post' action='${path}/gongjiboard/board/insert'>
 	<table class='table table-bordered table-sm' width='100%'>
@@ -71,11 +75,11 @@
 		</td>
 		</tr>
 	</table>
-	<div class='text-right'>
-	<!--취소 버튼 누르면 목록으로 돌아가기-->
-	<input type='button' class="btn btn-default btn-sm" value='취소' id='btnlist' />
-	<!--쓰기 버튼 누르면 post방식으로 데이터 전송하기-->
-	<input type='button' class="btn btn-default btn-sm" value='쓰기' id='btninsert' />
+	<div class='text-right' data-role="controlgroup" data-type="horizontal" data-mini="true">
+		<!--취소 버튼 누르면 목록으로 돌아가기-->
+		<input type='button' class="btn btn-default btn-sm" value='취소' id='btnlist' />
+		<!--쓰기 버튼 누르면 post방식으로 데이터 전송하기-->
+		<input type='button' class="btn btn-default btn-sm" value='쓰기' id='btninsert' />
 	</div>
 	</form>
 	</div>
